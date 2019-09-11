@@ -13,6 +13,9 @@ TEMPLATE = """
           color: white;
           font-family: sans-serif
         }
+        a {
+          color: white;
+        }
         label {
           background-color: black;
         }
@@ -26,7 +29,12 @@ TEMPLATE = """
         video.segment {
         }
         </style>
-        <title>Bandersnatch</title>
+        <meta property="og:title" content="Bandersnatch{% if shared_seed %} {{ length }}{% endif %}">
+        <meta property="og:description" content="A webpage that generates a valid path through the interactive movie Bandersnatch">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://bs.home.b303.me">
+        <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/White_Bear_Black_Mirror.png/170px-White_Bear_Black_Mirror.png">
+        <title>Bandersnatch{% if shared_seed %} {{ length }}{% endif %}</title>
     </head>
     <body>
         <h3>{{ length }} <a href="?seed={{ seed }}">Share</a></h3>
@@ -60,11 +68,18 @@ def as_json(seed=None):
 
 @app.route("/")
 def index():
+    shared_seed = request.args.get("seed")
     orig_seed = request.args.get("seed", int(time()))
     if type(orig_seed) is str and orig_seed.isdigit():
         orig_seed = int(orig_seed)
     concat, options, length, seed = bandersnatch(seed=orig_seed)
-    return render_template_string(TEMPLATE, concat=concat, options=options, length=length, seed=seed)
+    return render_template_string(
+            TEMPLATE,
+            shared_seed=shared_seed,
+            concat=concat,
+            options=options,
+            length=length,
+            seed=seed )
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=24572)
