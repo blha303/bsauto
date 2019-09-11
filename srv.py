@@ -30,7 +30,7 @@ TEMPLATE = """
     </head>
     <body>
         <h3>{{ length }} <a href="?seed={{ seed }}">Share</a></h3>
-        <p><a href='https://gist.github.com/blha303/397f724c8e420cbb8023e676c972e052'>How to get segments</a></p>
+        <p><a href='https://gist.github.com/blha303/397f724c8e420cbb8023e676c972e052'>How to get segments</a> | <a href='https://github.com/blha303/bsauto'>Source</a></p>
         <textarea>{% for segment in concat %}
 file '{{ segment }}.mkv' {% endfor %}</textarea>
         <div style='display: flex; flex-wrap: wrap;'>
